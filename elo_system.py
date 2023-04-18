@@ -18,42 +18,66 @@ def main():
     playerNames = ["Justin Shaytar", "Sam McCune", "Nolan Marolf", "Isaac Staats", "Alex Newton", "John Putney", "Dustin Grant", "Ian Lane"]
     players_dict = {}
     for i in range(len(playerNames)):
-        player = playerNames[i]
-        mu = i
-        players_dict[player] = trueskill.Rating(mu=mu)
+        players_dict[playerNames[i]] = trueskill.Rating(mu=i)
 
     for i in range(5):
-        teams = createTeams(players_dict)
+        players = sortPlayersBySkill(players_dict)
+        print("Players")
+        for player in players:
+            print(player)
+        print()
 
+        teams = createTeams(players)
+
+        print("Teams")
         for team in teams:
-            print(f"Player One: {team[0]}, Player Two: {team[1]}")
+            print(f"Player One: {team[0][0]}, Player Two: {team[1][0]}")
         print()
         games = createGames(teams)
-        # players_list = list(players_dict)
-        # for player in players_dict:
-        #     print(f"Player: {player}, Rating: {players_dict[player]}")
-        # print()
-        # players_dict = sortPlayersBySkill(players_dict)
+        print("Games")
+        for game in games:
+            printGame(game)
+        players_dict = simulateGames(games)
 
-    # for player in players_dict:
-    #     print(f"Player: {player}, Rating: {players_dict[player]}")
-    #     print()
+
+def getPlayerRatingByName(name : str, players : list):
+    for player in players:
+        if player[0] == name:
+            return player[1]
+        
+
+def simulateGames(games : list):
+    players = {}
+    for game in games:
+        r1 = game[0][0][1]
+        r2 = game[0][1][1]
+        r3 = game[1][0][1]
+        r4 = game[1][1][1]
+        t1 = [r1, r2]
+        t2 = [r3, r4]
+        (players[game[0][0][0]], players[game[0][1][0]]) = trueskill.rate([t1, t2], ranks=[0,1])
+    return players
 
 
 def createGames(teams : list):
+    games = []
     for team in teams:
-        teams.append(getAverageSkill(team))
+        team.append(getAverageSkill(team))
+    teams = sortTeamsBySkill(teams)
+    for i in range(0, len(teams)-1, 2):
+        game = [teams[i], teams[i+1]]
+        games.append(game)
+    return games
 
 
 def getAverageSkill(team : list):
-    return (team[0].mu + team[1].mu)/2.0
+    return (team[0][1].mu + team[1][1].mu)/2.0
 
 
-def createTeams(players_dict : dict):
-    nums_list = list(range(len(players_dict)))
-    players = list(players_dict)
+def createTeams(players : list):
+    nums_list = list(range(len(players)))
     teams = []
-    for i in range(int(len(players_dict)/2)):
+    for i in range(int(len(players)/2)):
         index = random.randint(0, len(nums_list)-1)
         p1 = players[nums_list[index]]
         nums_list.remove(nums_list[index])
@@ -66,7 +90,21 @@ def createTeams(players_dict : dict):
 
 
 def sortPlayersBySkill(players : dict):
-    return dict(sorted(players.items(), key=lambda item: item[1], reverse=True))
+    return sorted(players.items(), key=lambda item: item[1], reverse=True)
+
+
+def sortTeamsBySkill(teams : list):
+    return sorted(teams, key=lambda item: item[2], reverse=True)
+
+
+def printGame(game : list):
+    print("Team One")
+    print(f"Player One: {game[0][0]}")
+    print(f"Player Two: {game[0][1]}")
+    print("Team Two")
+    print(f"Player Three: {game[1][0]}")
+    print(f"Player Four: {game[1][1]}")
+    print()
 
 
 # def main():
@@ -116,38 +154,6 @@ def sortPlayersBySkill(players : dict):
 #     if value >= CONTENDER_ONE:
 #         return "Contender 1"
 #     return "Advanced"
-
-
-# def mergeSort(players : list):
-#     if len(players) == 0:
-#         return []
-#     elif len(players) == 1:
-#         return [players[0]]
-#     else:
-#         index = math.floor(int(len(players)/2))
-#         left = mergeSort(players[:index])
-#         right =  mergeSort(players[index:])
-#         return merge(left, right)
-    
-
-# def merge(left : list, right : list):
-#     l = 0
-#     r = 0
-#     sorted_list = []
-#     while l < len(left) and r < len(right):
-#         if left[l][1].mu < right[r][1].mu:
-#             sorted_list.append(right[r])
-#             r += 1
-#         else:
-#             sorted_list.append(left[l])
-#             l += 1
-#     while l < len(left):
-#         sorted_list.append(left[l])
-#         l += 1
-#     while r < len(right):
-#         sorted_list.append(right[r])
-#         r += 1
-#     return sorted_list
 
 
 if __name__ == "__main__":
