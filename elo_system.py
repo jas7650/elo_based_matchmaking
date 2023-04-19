@@ -1,21 +1,55 @@
-import math
 import trueskill
 import random
+import sheet_utils
+import argparse
 
 
 def main():
-    playerNames = ["Justin Shaytar", "Sam McCune", "Nolan Marolf", "Isaac Staats", "Alex Newton", "John Putney", "Dustin Grant", "Ian Lane"]
+
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
+    mode_parser = parser.add_mutually_exclusive_group(required=True)
+    mode_parser.add_argument(
+        '-s',
+        dest='simulate',
+        default=False,
+        action='store_true',
+        required=False,
+        help="Option to run simulation of games"
+    )
+    mode_parser.add_argument(
+        '-g',
+        dest='create_games',
+        default=False,
+        action='store_true',
+        required=False,
+        help="Option to generate games based on existing list of players"
+    )
+    args = parser.parse_args()
+    if args.simulate == True:
+        simulate()
+    if args.create_games == True:
+        generateMatches()
+
+
+def simulate():
+    wb = sheet_utils.getWorkBook("elo_database.xlsx")
+    sheet = sheet_utils.getSheetByName(wb, "Data")
+    playerNames = sheet_utils.getColumnData(sheet, 1)
+    mus = sheet_utils.getColumnData(sheet, 2)
+    sigmas = sheet_utils.getColumnData(sheet, 3)
+
+    wb = sheet_utils.removeSheets(wb)
+
     players_dict = {}
     
-    for player in playerNames:
-        players_dict[player] = trueskill.Rating()
+    for i in range(len(playerNames)):
+        players_dict[playerNames[i]] = trueskill.Rating(mu=float(mus[i]), sigma=float(sigmas[i]))
     players = sortPlayersBySkill(players_dict)
 
     for i in range(50):
         print(f"Iteration: {i}")
 
-        teams = createTeams(players)
-        games = createGames(teams)
+        games = createGames(players)
         print("Games")
         for game in games:
             printGame(game)
@@ -26,6 +60,45 @@ def main():
         for player in players:
             print(player)
         print()
+
+    writePlayersToSheet(wb, players)
+
+
+def generateMatches():
+    wb = sheet_utils.getWorkBook("elo_database.xlsx")
+    sheet = sheet_utils.getSheetByName(wb, "Data")
+    playerNames = sheet_utils.getColumnData(sheet, 1)
+    mus = sheet_utils.getColumnData(sheet, 2)
+    sigmas = sheet_utils.getColumnData(sheet, 3)
+
+    players_dict = {}
+    
+    for i in range(len(playerNames)):
+        players_dict[playerNames[i]] = trueskill.Rating(mu=float(mus[i]), sigma=float(sigmas[i]))
+    players = sortPlayersBySkill(players_dict)
+
+    print("Players")
+    for player in players:
+        print(player)
+    print()
+
+    games = createGames(players)
+    print("Games")
+    for game in games:
+        printGame(game)
+
+
+def writePlayersToSheet(wb, players : list):
+    playerNames = ["Player"]
+    mus = ["Mu"]
+    sigmas = ["Sigma"]
+    for player in players:
+        playerNames.append(player[0])
+        mus.append(player[1].mu)
+        sigmas.append(player[1].sigma)
+    data = [playerNames, mus, sigmas]
+    sheet_utils.writeToSheet(data, wb, "Data")
+    sheet_utils.saveWorkBook(wb, "elo_database.xlsx")
 
 
 def getPlayerRatingByName(name : str, players : list):
@@ -47,8 +120,30 @@ def simulateGames(games : list):
     return players
 
 
-def createGames(teams : list):
+def createGames(players : list):
     games = []
+    teams = []
+    players_copy = players.copy()
+
+    for i in range(int(len(players)/4)):
+        people = []
+        for j in range(4):
+            player = players_copy[random.randint(0, getUpperLimit(players_copy, j))]
+            people.append(player)
+            players_copy.remove(player)
+        team = []
+        team.append(people[random.randint(0, 3)])
+        people.remove(team[0])
+        team.append(people[random.randint(0, 2)])
+        people.remove(team[1])
+        teams.append(team)
+
+        team = []
+        team.append(people[0])
+        team.append(people[1])
+        teams.append(team)
+
+
     for team in teams:
         team.append(getAverageSkill(team))
     teams = sortTeamsBySkill(teams)
@@ -56,6 +151,13 @@ def createGames(teams : list):
         game = [teams[i], teams[i+1]]
         games.append(game)
     return games
+
+
+def getUpperLimit(list : list, iteration : int):
+    if len(list) <= 5:
+        return len(list)-1
+    else:
+        return 5-iteration
 
 
 def getRandomRanks():
@@ -67,25 +169,6 @@ def getRandomRanks():
 
 def getAverageSkill(team : list):
     return (team[0][1].mu + team[1][1].mu)/2.0
-
-
-def createTeams(players : list):
-    players_copy = players.copy()
-    nums_list = list(range(len(players)))
-    teams = []
-    for i in range(int(len(players)/2)):
-        team = getTeam(players_copy)
-        players_copy.remove(team[0])
-        players_copy.remove(team[1])
-        teams.append(team)
-    return teams
-
-
-def getTeam(players : list):
-    if len(players) >= 4:
-        return [players[0], players[random.randint(1, 3)]]
-    else:
-        return [players[0], players[random.randint(1, len(players)-1)]]
 
 
 def sortPlayersBySkill(players : dict):
