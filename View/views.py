@@ -3,13 +3,48 @@ from dominate.tags import *
 from Model.Player import Player
 
 
-def homePage():
+def homePage(games : list):
     doc = dominate.document(title='Home Page')
+
+    with doc.head:
+        style("""
+        table, tr, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        """
+        )
 
     with doc:
         h1("Home Page")
         button(a("Players", href="/players"))
         button(a("Create Games", href="/games"))
+
+        h1("Game History")
+        t = table()
+        row = tr()
+        row.add(td("Team One"))
+        row.add(td("Team Two"))
+        t.add(row)
+
+        t1 = table()
+        row = tr()
+        row.add(td("Player One"))
+        row.add(td("Player Two"))
+        row.add(td("Score"))
+        t1.add(row)
+
+        t2 = table()
+        row = tr()
+        row.add(td("Player One"))
+        row.add(td("Player Two"))
+        row.add(td("Score"))
+        t2.add(row)
+
+        row = tr()
+        row.add(t1)
+        row.add(t2)
+        t.add(row)
 
     return doc.render()
 
@@ -41,7 +76,7 @@ def playerPage(player : Player):
     return doc.render()
 
 
-def addPlayerPage():
+def addPlayerPage(players : list):
     doc = dominate.document(title=f"Add Player")
 
     with doc.head:
@@ -71,6 +106,10 @@ def addPlayerPage():
 
             input_(type="submit", name="form", value="Submit")
 
+        h1("Existing Players")
+        list = ul()
+        for player in players:
+            list.add(li(button(a(player.getName(), href=f"/player/{player.getName()}"), id=player.getName())))
         br()
         button(a("Return to players page", href="/players/"))
         br()
