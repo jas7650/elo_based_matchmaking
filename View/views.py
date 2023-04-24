@@ -103,16 +103,17 @@ def gamesPage(games : list):
             row.add(td("Team Two:"))
             row.add(td("Team Two Score:"))
             t.add(row)
-            for game in games:
+            for i in range(len(games)):
+                game = games[i]
                 row = tr()
 
                 t1 = game.getTeamOneNames()
                 row.add(td(f"{t1[0]}, {t1[1]}"))
-                row.add(td(input_(type="text", name="t1_score")))
+                row.add(td(input_(type="text", name=f"t1_score_{i}")))
 
                 t2 = game.getTeamTwoNames()
                 row.add(td(f"{t2[0]}, {t2[1]}"))
-                row.add(td(input_(type="text", name="t2_score")))
+                row.add(td(input_(type="text", name=f"t2_score_{i}")))
                 t.add(row)
                 br()
             input_(type="submit", name="form", value="Submit")

@@ -46,10 +46,14 @@ def create_games():
 
 @app.route('/games/', methods=['POST'])
 def update_games():
-    t1_scores = request.form['t1_score']
-    t2_scores = request.form['t2_score']
-    controller.getGames()[0].setTeamScores(t1_scores, t2_scores)
-    controller.updateRatings(controller.getGames()[0])
+    t1_scores = []
+    t2_scores = []
+    for i in range(len(controller.getGames())):
+        t1_score = request.form[f't1_score_{i}']
+        t2_score = request.form[f't2_score_{i}']
+        controller.getGames()[i].setTeamScores(t1_score, t2_score)
+        controller.updateRatings(controller.getGames()[i])
+
     return views.gamesPageScores(controller.getGames())
 
 
