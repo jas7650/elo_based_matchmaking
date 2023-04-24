@@ -3,8 +3,7 @@ import View.views as views
 from Model.Game import Game
 from Model.Team import Team
 from Model.Player import Player
-import Controller.elo_system as elo_system
-from Controller.controller import Controller
+from Controller.Controller import Controller
 
 app = Flask(__name__)
 
@@ -35,13 +34,13 @@ def add_player_to_list():
 @app.route('/player/<string:name>')
 def player_page(name):
     print(name)
-    player = getPlayerByName(name)
+    player = controller.getPlayerByName(name)
     return views.playerPage(player)
 
 
 @app.route('/games/')
 def create_games():
-    controller.setGames(elo_system.createGames(controller.getPlayers()))
+    controller.createGames()
     return views.gamesPage(controller.getGames())
 
 
@@ -50,15 +49,9 @@ def update_games():
     t1_scores = request.form['t1_score']
     t2_scores = request.form['t2_score']
     controller.getGames()[0].setTeamScores(t1_scores, t2_scores)
+    controller.updateRatings(controller.getGames()[0])
     return views.gamesPageScores(controller.getGames())
 
 
-def getPlayerByName(name : str):
-    for player in controller.getPlayers():
-        if player.getName() == name:
-            return player
-
-
 if __name__ == '__main__':
-    # views.renderPages()
     app.run(debug=True)

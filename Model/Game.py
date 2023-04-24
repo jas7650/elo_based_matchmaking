@@ -29,7 +29,7 @@ class Game(object):
     def getTeamTwoScore(self):
         return self.t2_score
 
-    def getWinner(self):
+    def getResult(self):
         if self.t1_score > self.t2_score:
-            return self.teamOne
-        return self.teamTwo
+            return [0, 1]
+        return [1, 0]
