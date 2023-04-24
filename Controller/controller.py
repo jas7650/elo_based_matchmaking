@@ -10,6 +10,7 @@ class Controller(object):
     def __init__(self):
         self.players = []
         self.games = []
+        self.unplayedGames = []
 
     def getPlayerByName(self, name : str):
         for player in self.players:
@@ -24,6 +25,13 @@ class Controller(object):
 
     def getGames(self):
         return self.games
+    
+    def getUnplayedGames(self):
+        return self.unplayedGames
+    
+    def addGames(self, games : list):
+        for game in games:
+            self.games.append(game)
     
     def updateRatings(self, game : Game):
         p1 = self.getPlayerByName(game.getTeamOne().getPlayerOne().getName())
@@ -44,14 +52,14 @@ class Controller(object):
 
     
     def createGames(self):
-        self.games = []
+        self.unplayedGames = []
         players = self.sortPlayersBySkill(self.players)
         teams = self.createTeams(players)
 
         teams = self.sortTeamsBySkill(teams)
         for i in range(0, len(teams)-1, 2):
             game = Game(teams[i], teams[i+1])
-            self.games.append(game)
+            self.unplayedGames.append(game)
 
 
     def createTeams(self, players : list):
