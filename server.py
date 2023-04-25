@@ -11,7 +11,7 @@ controller = Controller()
 
 @app.route('/')
 def index():
-    return views.homePage(controller.getGames(), controller.getPlayers())
+    return views.homePage(controller.getPlayedGames(), controller.getPlayers())
 
 @app.route('/', methods=['POST'])
 def update_games():
@@ -20,8 +20,8 @@ def update_games():
         t2_score = request.form[f't2_score_{i}']
         controller.getUnplayedGames()[i].setTeamScores(t1_score, t2_score)
         controller.updateRatings(controller.getUnplayedGames()[i])
-        controller.addGames(controller.getUnplayedGames())
-    return views.homePage(controller.getGames(), controller.getPlayers())
+    controller.addPlayedGames(controller.getUnplayedGames())
+    return views.homePage(controller.getPlayedGames(), controller.getPlayers())
 
 
 @app.route('/add_player/', methods=['GET'])
