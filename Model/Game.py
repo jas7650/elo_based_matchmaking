@@ -6,6 +6,7 @@ class Game(object):
         self.teamTwo = teamTwo
         self.t1_score = 0
         self.t2_score = 0
+        self.played = False
     
     def getTeamOne(self):
         return self.teamOne
@@ -18,6 +19,12 @@ class Game(object):
     
     def getTeamTwoNames(self):
         return self.teamTwo.getNames()
+    
+    def setPlayed(self):
+        self.played = True
+
+    def getPlayed(self):
+        return self.played
     
     def setTeamScores(self, t1_score : int, t2_score : int):
         self.t1_score = t1_score

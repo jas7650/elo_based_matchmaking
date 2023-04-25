@@ -33,11 +33,12 @@ def homePage(games : list, players : list):
         row.add(td("Team Two"))
         t.add(row)
         for game in games:
-            row = tr()
-            row.add(td(f"{game.getTeamOneNames()[0]}, {game.getTeamOneNames()[1]}"))
-            row.add(td(f"{game.getTeamOneScore()}-{game.getTeamTwoScore()}"))
-            row.add(td(f"{game.getTeamTwoNames()[0]}, {game.getTeamTwoNames()[1]}"))
-            t.add(row)
+            if game.getPlayed() == True:
+                row = tr()
+                row.add(td(f"{game.getTeamOneNames()[0]}, {game.getTeamOneNames()[1]}"))
+                row.add(td(f"{game.getTeamOneScore()}-{game.getTeamTwoScore()}"))
+                row.add(td(f"{game.getTeamTwoNames()[0]}, {game.getTeamTwoNames()[1]}"))
+                t.add(row)
 
     return doc.render()
 
@@ -120,17 +121,18 @@ def gamesPage(games : list):
             t.add(row)
             for i in range(len(games)):
                 game = games[i]
-                row = tr()
+                if game.getPlayed() == False:
+                    row = tr()
 
-                t1 = game.getTeamOneNames()
-                row.add(td(f"{t1[0]}, {t1[1]}"))
-                row.add(td(input_(type="text", name=f"t1_score_{i}")))
+                    t1 = game.getTeamOneNames()
+                    row.add(td(f"{t1[0]}, {t1[1]}"))
+                    row.add(td(input_(type="text", name=f"t1_score_{i}")))
 
-                t2 = game.getTeamTwoNames()
-                row.add(td(f"{t2[0]}, {t2[1]}"))
-                row.add(td(input_(type="text", name=f"t2_score_{i}")))
-                t.add(row)
-                br()
+                    t2 = game.getTeamTwoNames()
+                    row.add(td(f"{t2[0]}, {t2[1]}"))
+                    row.add(td(input_(type="text", name=f"t2_score_{i}")))
+                    t.add(row)
+                    br()
             input_(type="submit", name="form", value="Submit")
 
         br()
