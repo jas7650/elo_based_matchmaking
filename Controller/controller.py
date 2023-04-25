@@ -22,6 +22,10 @@ class Controller(object):
     def getPlayers(self):
         return self.players
     
+    def removePlayer(self, name : str):
+        player = self.getPlayerByName(name)
+        self.getPlayers().remove(player)
+    
     def getGames(self):
         return self.games
     

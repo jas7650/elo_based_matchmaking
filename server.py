@@ -41,11 +41,16 @@ def add_player_to_list():
     return views.addPlayerPage(controller.getPlayers())
 
 
-@app.route('/player/<string:name>')
-def player_page(name):
-    print(name)
+@app.route('/player/<string:name>', methods=['GET'])
+def player_page_get(name):
     player = controller.getPlayerByName(name)
     return views.playerPage(player)
+
+
+@app.route('/player/<string:name>', methods=['POST'])
+def player_page_post(name):
+    controller.removePlayer(name)
+    return views.playerPage(None)
 
 
 @app.route('/games/')

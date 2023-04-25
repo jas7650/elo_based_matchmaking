@@ -49,8 +49,8 @@ def playerPage(player : Player):
     with doc:
         h1(f"Showing stats for {player.getName()}")
         h3(f"Skill Level: {player.getMu()}")
-
-        button(a("Return to home", href="/"))
+        button(a("Delete Player", href=f"/player/{player.getName()}", method="post"))
+        button(a("Return Home", href="/"))
 
     return doc.render()
 
