@@ -36,7 +36,8 @@ def add_players_page():
 @app.route('/add_player/', methods=['POST'])
 def add_player_to_list():
     player = Player(request.form['player_name'], float(request.form['skill_level']), float(request.form['skill_level'])/5)
-    controller.getPlayers().append(player)
+    if controller.getPlayerByName(player.getName()) == None:
+        controller.getPlayers().append(player)
     return views.addPlayerPage(controller.getPlayers())
 
 
