@@ -8,8 +8,18 @@ import trueskill
 class Controller(object):
 
     def __init__(self):
-        self.players = []
+        self.players = self.initPlayers()
         self.games = []
+
+    def initPlayers(self):
+        playerNames = ["Justin Shaytar", "Donald Fung", "Nolan Marolf", "Josh Hutko", "Isaac Staats", "Alex Newton", "David Rowlands", "Spencer Argenna"]
+        mus = [5.5, 5.4, 5.3, 5.2, 5.1, 5.0, 4.9, 4.8]
+        players = []
+        for i in range(len(playerNames)):
+            player = Player(playerNames[i], mus[i], mus[i]/4)
+            players.append(player)
+        return players
+
 
     def getPlayerByName(self, name : str):
         for player in self.players:
@@ -24,7 +34,7 @@ class Controller(object):
     
     def removePlayer(self, name : str):
         player = self.getPlayerByName(name)
-        self.getPlayers().remove(player)
+        self.players = self.getPlayers().remove(player)
     
     def getGames(self):
         return self.games
