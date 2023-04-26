@@ -17,13 +17,13 @@ def homePage(games : list, players : list):
 
     with doc:
         h1("Home Page")
-        button(a("Add Player", href="/add_player/"))
-        button(a("Create Games", href="/games"))
+        getButton("/add_player/", 'get', "Add Player")
+        getButton("/games/", 'get', "Create Games")
 
         h1("Players")
         list = ul()
         for player in players:
-            list.add(li(button(a(player.getName(), href=f"/player/{player.getName()}"), id=player.getName())))
+            list.add(li(getButton(f"/player/{player.getName()}", 'get', player.getName())))
 
         h1("Game History")
         t = table()
@@ -44,14 +44,19 @@ def homePage(games : list, players : list):
 
 
 def playerPage(player : Player):
-    doc = dominate.document(title=f"{player.getName()} Stats")
+    if player != None:
+        doc = dominate.document(title=f"{player.getName()} Stats")
 
-    with doc:
-        h1(f"Showing stats for {player.getName()}")
-        h3(f"Skill Level: {player.getMu()}")
-        button(a("Delete Player", href=f"/player/{player.getName()}", method="post"))
-        button(a("Return Home", href="/"))
-
+        with doc:
+            h1(f"Showing stats for {player.getName()}")
+            h3(f"Skill Level: {player.getMu()}")
+            getButton(f"/player/{player.getName()}", 'post', "Delete Player")
+            getButton("/", 'get', "Return Home")
+    else:
+        doc = dominate.document(title="Player Not Found")
+        with doc:
+            h1("Couldn't find the player you were looking for!")
+            getButton("/", 'get', "Return Home")
     return doc.render()
 
 
@@ -88,9 +93,9 @@ def addPlayerPage(players : list):
         h1("Existing Players")
         list = ul()
         for player in players:
-            list.add(li(button(a(player.getName(), href=f"/player/{player.getName()}"), id=player.getName())))
+            list.add(li(getButton(f"/player/{player.getName()}", 'get', player.getName())))
         br()
-        button(a("Return to home", href="/"))
+        getButton("/", 'get', "Return Home")
 
     return doc.render()
 
@@ -136,6 +141,12 @@ def gamesPage(games : list):
             input_(type="submit", name="form", value="Submit")
 
         br()
-        button(a("Return to home", href="/"))
+        getButton("/", 'get', "Return Home")
 
     return doc.render()
+
+
+def getButton(action : str, method : str, message : str):
+    f = form(action=action, method=method)
+    f.add(button(message))
+    return f

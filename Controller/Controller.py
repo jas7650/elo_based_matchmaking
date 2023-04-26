@@ -34,7 +34,7 @@ class Controller(object):
     
     def removePlayer(self, name : str):
         player = self.getPlayerByName(name)
-        self.players = self.getPlayers().remove(player)
+        self.players.remove(player)
     
     def getGames(self):
         return self.games
