@@ -50,7 +50,7 @@ def playerPage(player : Player):
         with doc:
             h1(f"Showing stats for {player.getName()}")
             h3(f"Skill Level: {player.getMu()}")
-            getButton(f"/player/{player.getName()}", 'post', "Delete Player")
+            getButton(f"/player/{player.getName()}/", 'post', "Delete Player")
             getButton("/", 'get', "Return Home")
     else:
         doc = dominate.document(title="Player Not Found")
@@ -93,7 +93,7 @@ def addPlayerPage(players : list):
         h1("Existing Players")
         list = ul()
         for player in players:
-            list.add(li(getButton(f"/player/{player.getName()}", 'get', player.getName())))
+            list.add(li(getButton(f"/player/{player.getName()}/", 'get', player.getName())))
         br()
         getButton("/", 'get', "Return Home")
 
@@ -115,7 +115,7 @@ def gamesPage(games : list):
     with doc:
         h1("Games Page")
 
-        f = form(action="/", method="post")
+        f = form(action="/games/", method="post")
         with f:
             t = table()
             row = tr()
