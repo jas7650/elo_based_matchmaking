@@ -27,7 +27,7 @@ def add_players_page():
 def player_page(name):
     if request.method == 'GET':
         player = controller.getPlayerByName(name)
-        return render_template('player.html', player=player)
+        return render_template('player.html', player=player, games=controller.getGames())
     elif request.method == 'POST':
         controller.removePlayer(name)
         return redirect(url_for('home_page'))

@@ -7,6 +7,12 @@
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <style>
+            table, tr, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+        </style>
 
         <title>{{player.getName()}}</title>
     </head>
@@ -30,11 +36,21 @@
             <td>Team Two</td>
         </tr>
         {% for game in games %}
+        {% if game.getPlayed() == True %}
+        {% if player.getName() in game.getTeamOneNames() %}
         <tr>
             <td>{{game.getTeamOneNames()[0]}}, {{game.getTeamOneNames()[1]}}</td>
-            <td>{{game.getTeamOneScore()}}, {{game.getTeamTwoScore()}}</td>
+            <td>{{game.getTeamOneScore()}} - {{game.getTeamTwoScore()}}</td>
             <td>{{game.getTeamTwoNames()[0]}}, {{game.getTeamTwoNames()[1]}}</td>
         </tr>
+        {% elif player.getName() in game.getTeamTwoNames() %}
+        <tr>
+            <td>{{game.getTeamTwoNames()[0]}}, {{game.getTeamTwoNames()[1]}}</td>
+            <td>{{game.getTeamTwoScore()}} - {{game.getTeamOneScore()}}</td>
+            <td>{{game.getTeamOneNames()[0]}}, {{game.getTeamOneNames()[1]}}</td>
+        </tr>
+        {% endif %}
+        {% endif %}
         {% endfor %}
     </table>
 
