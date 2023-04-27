@@ -1,5 +1,4 @@
-from flask import Flask, request, redirect, url_for
-import View.views as views
+from flask import Flask, request, redirect, url_for, render_template
 from Model.Game import Game
 from Model.Team import Team
 from Model.Player import Player
@@ -12,25 +11,23 @@ controller = Controller()
 @app.route('/', methods = ['GET'])
 def home_page():
     if request.method == 'GET':
-        return views.homePage(controller.getGames(), controller.getPlayers())  
+        return render_template('home.html', players=controller.getPlayers(), games=controller.getGames())  
 
 
 @app.route('/add_player/', methods=['GET', 'POST'])
 def add_players_page():
-    if request.method == 'GET':
-        return views.addPlayerPage(controller.getPlayers())
-    elif request.method == 'POST':
+    if request.method == 'POST':
         player = Player(request.form['player_name'], float(request.form['skill_level']), float(request.form['skill_level'])/5)
         if controller.getPlayerByName(player.getName()) == None:
             controller.getPlayers().append(player)
-        return views.addPlayerPage(controller.getPlayers())
+    return render_template('add_player.html', players=controller.getPlayers())
 
 
-@app.route('/player/<string:name>', methods=['GET', 'POST'])
+@app.route('/player/<string:name>/', methods=['GET', 'POST'])
 def player_page(name):
     if request.method == 'GET':
         player = controller.getPlayerByName(name)
-        return views.playerPage(player)
+        return render_template('player.html', player=player)
     elif request.method == 'POST':
         controller.removePlayer(name)
         return redirect(url_for('home_page'))
@@ -40,7 +37,7 @@ def player_page(name):
 def games_page():
     if request.method == 'GET':
         controller.createGames()
-        return views.gamesPage(controller.getGames())
+        return render_template('games.html', games=controller.getGames())
     elif request.method == 'POST':
         for i in range(len(controller.getGames())):
             game = controller.getGames()[i]
