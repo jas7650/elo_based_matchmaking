@@ -1,63 +1,48 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% extends "base.html" %}
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <style>
-            table, tr, td {
-                border: 1px solid black;
-                border-collapse: collapse;
-            }
-        </style>
+{% block style %}
+<style>
+    table, tr, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+{% endblock %}
+{% block title %}player.getName(){% endblock %}
+{% block content %}
+<h1>Showing stats for {{player.getName()}}</h1>
+<ul>
+    <li>Skill Level: {{player.getMu()}}</li>
+    <li>Record: {{player.getWins()}} - {{player.getLosses()}}</li>
+</ul>
 
-        <title>{{player.getName()}}</title>
-    </head>
-    <body>
-        <h1>Showing stats for {{player.getName()}}</h1>
-        <h3>Skill Level: {{player.getMu()}}</h3>
-        <form action="/player/{{player.getName()}}/" method="post">
-            <button>Delete Player</button>
-        </form>
-        <form action="/" method="get">
-            <button>Return Home</button>
-        </form>
-    </body>
-</html>
+<form action="/player/{{player.getName()}}/" method="post">
+    <button>Delete Player</button>
+</form>
+<h1>Game History</h1>
+<table>
+    <tr>
+        <td>Team One</td>
+        <td>Score</td>
+        <td>Team Two</td>
+    </tr>
+    {% for game in games %}
+    {% if game.getPlayed() == True %}
+    {% if player.getName() in game.getTeamOne() %}
+    <tr>
+        <td>{{game.getTeamOne()[0]}}, {{game.getTeamOne()[1]}}</td>
+        <td>{{game.getTeamOneScore()}} - {{game.getTeamTwoScore()}}</td>
+        <td>{{game.getTeamTwo()[0]}}, {{game.getTeamTwo()[1]}}</td>
+    </tr>
+    {% elif player.getName() in game.getTeamTwo() %}
+    <tr>
+        <td>{{game.getTeamTwo()[0]}}, {{game.getTeamTwo()[1]}}</td>
+        <td>{{game.getTeamTwoScore()}} - {{game.getTeamOneScore()}}</td>
+        <td>{{game.getTeamOne()[0]}}, {{game.getTeamOne()[1]}}</td>
+    </tr>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+</table>
 
-    <h1>Game History</h1>
-    <table>
-        <tr>
-            <td>Team One</td>
-            <td>Score</td>
-            <td>Team Two</td>
-        </tr>
-        {% for game in games %}
-        {% if game.getPlayed() == True %}
-        {% if player.getName() in game.getTeamOneNames() %}
-        <tr>
-            <td>{{game.getTeamOneNames()[0]}}, {{game.getTeamOneNames()[1]}}</td>
-            <td>{{game.getTeamOneScore()}} - {{game.getTeamTwoScore()}}</td>
-            <td>{{game.getTeamTwoNames()[0]}}, {{game.getTeamTwoNames()[1]}}</td>
-        </tr>
-        {% elif player.getName() in game.getTeamTwoNames() %}
-        <tr>
-            <td>{{game.getTeamTwoNames()[0]}}, {{game.getTeamTwoNames()[1]}}</td>
-            <td>{{game.getTeamTwoScore()}} - {{game.getTeamOneScore()}}</td>
-            <td>{{game.getTeamOneNames()[0]}}, {{game.getTeamOneNames()[1]}}</td>
-        </tr>
-        {% endif %}
-        {% endif %}
-        {% endfor %}
-    </table>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
-</html>
+{% endblock %}

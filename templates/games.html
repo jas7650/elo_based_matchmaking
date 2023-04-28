@@ -1,56 +1,39 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% extends "base.html" %}
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <style>
-        table, tr, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-    </style>
-
-    <title>Games Page</title>
-</head>
-<body>
-    <h1>Games Page</h1>
-    <form action="/games/" method="post">
-        <table>
-            <tr>
-                <td>Team One:</td>
-                <td>Team One Score:</td>
-                <td>Team Two:</td>
-                <td>Team Two Score:</td>
-            </tr>
-            {% for i in range(games|length) %}
-            {% if games[i].getPlayed() == False %}
-            <tr>
-                <td>{{games[i].getTeamOneNames()[0]}}, {{games[i].getTeamOneNames()[1]}}</td>
-                <td>
-                    <input name="t1_score_{{i}}" type="text">
-                </td>
-                <td>{{games[i].getTeamTwoNames()[0]}}, {{games[i].getTeamTwoNames()[1]}}</td>
-                <td>
-                    <input name="t2_score_{{i}}" type="text">
-                </td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-        </table><br><br>
-        <input name="form" type="submit" value="Submit">
-    </form><br>
-    <form action="/" method="get">
-        <button>Return Home</button>
-    </form>
-  
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-</body>
+{% block style %}
+<style>
+    table, tr, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+{% endblock %}
+{% block title %}Games Page{% endblock %}
+{% block content %}
+<h1>Games Page</h1>
+<form action="/games/" method="post">
+    <table>
+        <tr>
+            <td>Team One:</td>
+            <td>Team One Score:</td>
+            <td>Team Two:</td>
+            <td>Team Two Score:</td>
+        </tr>
+        {% for i in range(games|length) %}
+        {% if games[i].getPlayed() == False %}
+        <tr>
+            <td>{{games[i].getTeamOne()[0]}}, {{games[i].getTeamOne()[1]}}</td>
+            <td>
+                <input name="t1_score_{{i}}" type="text">
+            </td>
+            <td>{{games[i].getTeamTwo()[0]}}, {{games[i].getTeamTwo()[1]}}</td>
+            <td>
+                <input name="t2_score_{{i}}" type="text">
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table><br><br>
+    <input name="form" type="submit" value="Submit">
+</form><br>
+{% endblock %}
