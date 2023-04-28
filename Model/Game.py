@@ -1,7 +1,6 @@
-from Model.Team import Team
 
 class Game(object):
-    def __init__(self, teamOne, teamTwo):
+    def __init__(self, teamOne : list, teamTwo : list):
         self.teamOne = teamOne
         self.teamTwo = teamTwo
         self.t1_score = 0
@@ -14,21 +13,15 @@ class Game(object):
     def getTeamTwo(self):
         return self.teamTwo
     
-    def getTeamOneNames(self):
-        return self.teamOne.getNames()
-    
-    def getTeamTwoNames(self):
-        return self.teamTwo.getNames()
-    
     def setPlayed(self):
         self.played = True
 
     def getPlayed(self):
         return self.played
     
-    def setTeamScores(self, t1_score : int, t2_score : int):
-        self.t1_score = t1_score
-        self.t2_score = t2_score
+    def setScore(self, score : list):
+        self.t1_score = score[0]
+        self.t2_score = score[1]
 
     def getTeamOneScore(self):
         return self.t1_score

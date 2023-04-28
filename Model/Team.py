@@ -1,8 +1,8 @@
-import Model.Player
+from Model.Player import Player
 
 class Team(object):
     
-    def __init__(self, playerOne, playerTwo):
+    def __init__(self, playerOne : Player, playerTwo : Player):
         self.playerOne = playerOne
         self.playerTwo = playerTwo
 

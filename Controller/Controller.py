@@ -40,10 +40,10 @@ class Controller(object):
         return self.games
     
     def updateRatings(self, game : Game):
-        p1 = self.getPlayerByName(game.getTeamOne().getPlayerOne().getName())
-        p2 = self.getPlayerByName(game.getTeamOne().getPlayerTwo().getName())
-        p3 = self.getPlayerByName(game.getTeamTwo().getPlayerOne().getName())
-        p4 = self.getPlayerByName(game.getTeamTwo().getPlayerTwo().getName())
+        p1 = self.getPlayerByName(game.getTeamOne()[0])
+        p2 = self.getPlayerByName(game.getTeamOne()[1])
+        p3 = self.getPlayerByName(game.getTeamTwo()[0])
+        p4 = self.getPlayerByName(game.getTeamTwo()[1])
         r1 = p1.getRating()
         r2 = p2.getRating()
         r3 = p3.getRating()
@@ -55,6 +55,11 @@ class Controller(object):
         p2.setRating(r2)
         p3.setRating(r3)
         p4.setRating(r4)
+        p1.addResult(game)
+        p2.addResult(game)
+        p3.addResult(game)
+        p4.addResult(game)
+        self.players = self.sortPlayersBySkill(self.players)
 
     
     def createGames(self):
@@ -63,7 +68,9 @@ class Controller(object):
 
         teams = self.sortTeamsBySkill(teams)
         for i in range(0, len(teams)-1, 2):
-            game = Game(teams[i], teams[i+1])
+            t1 = [teams[i].getPlayerOne().getName(), teams[i].getPlayerTwo().getName()]
+            t2 = [teams[i+1].getPlayerOne().getName(), teams[i+1].getPlayerTwo().getName()]
+            game = Game(t1, t2)
             self.games.append(game)
 
 

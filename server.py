@@ -46,7 +46,7 @@ def games_page():
                 t2_score = request.form[f't2_score_{i}']
                 print(t1_score)
                 if t1_score != "" and t2_score != "":
-                    game.setTeamScores(t1_score, t2_score)
+                    game.setScore([t1_score, t2_score])
                     game.setPlayed()
                     controller.updateRatings(game)
         return redirect(url_for('home_page'))
