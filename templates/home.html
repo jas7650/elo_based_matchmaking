@@ -10,8 +10,8 @@
 {% endblock %}
 {% block title %}Home Page{% endblock %}
 {% block content %}
-<h1>Players</h1>
-<ul>
+<h1>Rankings</h1>
+<ol>
     {% for player in players %}
     <li>
         <form action="/player/{{player.getName()}}/", method="get">
@@ -19,7 +19,7 @@
         </form>
     </li>
     {% endfor %}
-</ul>
+</ol>
 
 <h1>Game History</h1>
 <table>
