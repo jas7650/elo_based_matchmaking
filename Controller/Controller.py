@@ -27,7 +27,7 @@ class Controller(object):
                 return player
 
     def setPlayers(self, players : list):
-        self.players = players
+        self.players = self.sortPlayersBySkill(players)
 
     def getPlayers(self):
         return self.players

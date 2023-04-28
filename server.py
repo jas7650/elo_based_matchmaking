@@ -17,9 +17,14 @@ def home_page():
 @app.route('/add_player/', methods=['GET', 'POST'])
 def add_players_page():
     if request.method == 'POST':
-        player = Player(request.form['player_name'], float(request.form['skill_level']), float(request.form['skill_level'])/5)
+        skill_level = getSkillLevel(request.form['skill_level'])
+        player = Player(request.form['player_name'], skill_level, skill_level/5)
         if controller.getPlayerByName(player.getName()) == None:
-            controller.getPlayers().append(player)
+            players = controller.getPlayers()
+            players.append(player)
+            print(players)
+            controller.setPlayers(players)
+            print(controller.getPlayers())
     return render_template('add_player.html', players=controller.getPlayers())
 
 
@@ -44,12 +49,42 @@ def games_page():
             if game.getPlayed() == False:
                 t1_score = request.form[f't1_score_{i}']
                 t2_score = request.form[f't2_score_{i}']
-                print(t1_score)
                 if t1_score != "" and t2_score != "":
                     game.setScore([t1_score, t2_score])
                     game.setPlayed()
                     controller.updateRatings(game)
         return redirect(url_for('home_page'))
+
+
+def getSkillLevel(option : str):
+    if option == "Pro":
+        return float(6.0)
+    elif option == "Premier I":
+        return float(5.0)
+    elif option == "Premier II":
+        return float(5.25)
+    elif option == "Premier III":
+        return float(5.5)
+    elif option == "Contender I":
+        return float(4.5)
+    elif option == "Contender II":
+        return float(4.67)
+    elif option == "Contender III":
+        return float(4.82)
+    elif option == "Advanced I":
+        return float(4.0)
+    elif option == "Advanced II":
+        return float(4.17)
+    elif option == "Advanced III":
+        return float(4.34)
+    elif option == "Intermediate I":
+        return float(3.0)
+    elif option == "Intermediate II":
+        return float(3.33)
+    elif option == "Intermediate III":
+        return float(3.67)
+    else:
+        return float(2.0)
 
 
 if __name__ == '__main__':

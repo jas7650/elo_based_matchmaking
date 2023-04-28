@@ -1,13 +1,4 @@
 {% extends "base.html" %}
-
-{% block style %}
-<style>
-    table, tr, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
-</style>
-{% endblock %}
 {% block title %}Home Page{% endblock %}
 {% block content %}
 <h1>Rankings</h1>
@@ -24,15 +15,15 @@
 <h1>Game History</h1>
 <table>
     <tr>
-        <td>Team One</td>
-        <td>Score</td>
-        <td>Team Two</td>
+        <td class="border border-dark">Team One</td>
+        <td class="border border-dark">Score</td>
+        <td class="border border-dark">Team Two</td>
     </tr>
     {% for game in games %}
     <tr>
-        <td>{{game.getTeamOne()[0]}}, {{game.getTeamOne()[1]}}</td>
-        <td>{{game.getTeamOneScore()}} - {{game.getTeamTwoScore()}}</td>
-        <td>{{game.getTeamTwo()[0]}}, {{game.getTeamTwo()[1]}}</td>
+        <td class="border border-dark">{{game.getTeamOne()[0]}}, {{game.getTeamOne()[1]}}</td>
+        <td class="border border-dark">{{game.getTeamOneScore()}} - {{game.getTeamTwoScore()}}</td>
+        <td class="border border-dark">{{game.getTeamTwo()[0]}}, {{game.getTeamTwo()[1]}}</td>
     </tr>
     {% endfor %}
 </table>
