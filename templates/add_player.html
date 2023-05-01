@@ -2,41 +2,37 @@
 {% block title %}Add Player{% endblock %}
 {% block content %}
 <h1>Add Player Page</h1>
-<form action="/add_player/" method="post">
+<form action="/group/{{group.getGroupName()}}/add_player/" method="post">
     <div class="form-group" style="width: 300px">
       <label for="playerName">Player Name</label>
       <input type="text" class="form-control" name="player_name" placeholder="Full Name of Player (i.e. 'John Smith')">
     </div>
     <div class="form-group" style="width: 300px">
-      <label for="skillLevel">Player Skill Level</label>
-      <select class="form-control" name="skill_level">
-        <option>Select Player Skill Level</option>
-        <option>Beginner</option>
-        <option>Intermediate I</option>
-        <option>Intermediate II</option>
-        <option>Intermediate III</option>
-        <option>Advanced I</option>
-        <option>Advanced II</option>
-        <option>Advanced III</option>
-        <option>Contender I</option>
-        <option>Contender II</option>
-        <option>Contender III</option>
-        <option>Premier I</option>
-        <option>Premier II</option>
-        <option>Premier III</option>
-        <option>Pro</option>
-      </select>
+        <label for="skillLevel">Player Skill Level</label>
+        <select class="form-control" name="skill_level">
+            <option>Select Player Skill Level</option>
+            <option>Beginner</option>
+            <option>Intermediate I</option>
+            <option>Intermediate II</option>
+            <option>Intermediate III</option>
+            <option>Advanced I</option>
+            <option>Advanced II</option>
+            <option>Advanced III</option>
+            <option>Contender I</option>
+            <option>Contender II</option>
+            <option>Contender III</option>
+            <option>Premier I</option>
+            <option>Premier II</option>
+            <option>Premier III</option>
+            <option>Pro</option>
+        </select>
     </div>
     <input name="form" type="submit" value="Submit">
-  </form>
+</form>
 <h1>Existing Players</h1>
 <ul>
     {% for player in players %}
-    <li>
-        <form action="/player/{{player.getName()}}/" method="get">
-            <button>{{player.getName()}}</button>
-        </form>
-    </li>
+        <li>{{player.getName()}}</li>
     {% endfor %}
 </ul><br>
 {% endblock %}

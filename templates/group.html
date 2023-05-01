@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Home Page{% endblock %}
+{% block title %}{{group.getGroupName()}}{% endblock %}
 {% block style %}
 <style>
     .hover-table {
@@ -85,27 +85,35 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-    <h1>Groups</h1>
-    
+    <h1>Rankings</h1>
     <table class="hover-table" role="table" cellspacing="0" cellpadding="0">
         <thead>
             <tr role="row">
-                <th class="name-column" role="columnheader">Group</th>
-                <th class="players-column" role="columnheader">Players</th>
+                <th class="rank-column" role="columnheader">Rank</th>
+                <th class="name-column" role="columnheader">Name</th>
+                <th class="rating-column" role="columnheader">Rating</th>
+                <th class="record-column" role="columnheader">Record</th>
             </tr>
         </thead>
         <tbody role="rowgroup">
-        {% for i in range(groups|length) %}
+        {% for i in range(players|length) %}
             <tr class="hover-table data-row" role="row">
-                <td class="name-column" role="cell">
-                    <a class="button" href="/group/{{groups[i].getGroupName()}}/" method="get">{{groups[i].getGroupName()}}</a>
+                <td class="rank-column" role="cell">
+                    <a class="button" href="/group/{{group.getGroupName()}}/player/{{players[i].getName()}}/" method="get">{{i+1}}</a>
                 </td>
-                <td class="players-column" role="cell">
-                    <a class="button" href="/group/{{groups[i].getGroupName()}}/" method="get">{{groups[i].getNumPlayers()}}</a>
+                <td class="name-column" role="cell">
+                    <a class="button" href="/group/{{group.getGroupName()}}/player/{{players[i].getName()}}/" method="get">{{players[i].getName()}}</a>
+                </td>
+                <td class="rating-column" role="cell" style="text-align: center;">
+                    <a class="button" href="/group/{{group.getGroupName()}}/player/{{players[i].getName()}}/" method="get">{{players[i].getMuRounded()}}</a>
+                </td>
+                <td class="record-column" role="cell" style="text-align: center;">
+                    <a class="button" href="/group/{{group.getGroupName()}}/player/{{players[i].getName()}}/" method="get">{{players[i].getRecord()}}</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <a href="/group/{{group.getGroupName()}}/add_player/" method="get">Add Player</a>
 </div>
 {% endblock %}

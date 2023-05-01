@@ -3,6 +3,7 @@ from Model.Game import Game
 from Model.Team import Team
 from Model.Player import Player
 from Controller.Controller import Controller
+from Model.Group import Group
 
 app = Flask(__name__)
 
@@ -11,49 +12,64 @@ controller = Controller()
 @app.route('/', methods = ['GET'])
 def home_page():
     if request.method == 'GET':
-        return render_template('home.html', players=controller.getPlayers(), games=controller.getGames())  
+        print(list(controller.getGroups().values()))
+        return render_template('home.html', groups=list(controller.getGroups().values()))  
 
 
-@app.route('/add_player/', methods=['GET', 'POST'])
-def add_players_page():
+@app.route('/group/<string:name>/add_player/', methods=['GET', 'POST'])
+def add_players_page(name):
+    group = controller.getGroup(name)
     if request.method == 'POST':
         skill_level = getSkillLevel(request.form['skill_level'])
         player = Player(request.form['player_name'], skill_level, skill_level/5)
-        if controller.getPlayerByName(player.getName()) == None:
-            players = controller.getPlayers()
-            players.append(player)
-            print(players)
-            controller.setPlayers(players)
-            print(controller.getPlayers())
-    return render_template('add_player.html', players=controller.getPlayers())
+        group.addPlayer(player)
+    return render_template('add_player.html', players=list(group.getPlayers().values()), group=group)
 
 
-@app.route('/player/<string:name>/', methods=['GET', 'POST'])
-def player_page(name):
+@app.route('/group/<string:group_name>/player/<string:player_name>/', methods=['GET', 'POST'])
+def player_page(group_name, player_name):
+    group = controller.getGroup(group_name)
     if request.method == 'GET':
-        player = controller.getPlayerByName(name)
-        return render_template('player.html', player=player, games=controller.getGames())
+        player = group.getPlayer(player_name)
+        return render_template('player.html', player=player, games=group.getGames())
     elif request.method == 'POST':
-        controller.removePlayer(name)
+        group.removePlayer(player_name)
         return redirect(url_for('home_page'))
 
 
-@app.route('/games/', methods = ['GET', 'POST'])
-def games_page():
+@app.route('/group/<string:name>/games/', methods = ['GET', 'POST'])
+def games_page(name):
+    group = controller.getGroup(name)
     if request.method == 'GET':
-        controller.createGames()
-        return render_template('games.html', games=controller.getGames())
+        group.createGames()
+        return render_template('games.html', games=group.getGames())
     elif request.method == 'POST':
-        for i in range(len(controller.getGames())):
-            game = controller.getGames()[i]
+        for i in range(len(group.getGames())):
+            game = group.getGames()[i]
             if game.getPlayed() == False:
                 t1_score = request.form[f't1_score_{i}']
                 t2_score = request.form[f't2_score_{i}']
                 if t1_score != "" and t2_score != "":
                     game.setScore([t1_score, t2_score])
                     game.setPlayed()
-                    controller.updateRatings(game)
+                    group.updateRatings(game)
         return redirect(url_for('home_page'))
+    
+
+@app.route('/create_group/', methods=['GET', 'POST'])
+def create_group_page():
+    if request.method == 'GET':
+        return render_template('create_group.html')
+    elif request.method == 'POST':
+        group_name = request.form['group_name']
+        controller.createGroup(group_name)
+        return redirect(url_for('home_page'))
+
+
+@app.route('/group/<string:name>/', methods=['GET', 'POST'])
+def groups_page(name):
+    group = controller.getGroup(name)
+    return render_template('group.html', group=controller.getGroup(name), players=list(group.getPlayers().values()))
 
 
 def getSkillLevel(option : str):

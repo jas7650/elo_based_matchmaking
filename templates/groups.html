@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}Home Page{% endblock %}
+{% block title %}Groups Page{% endblock %}
 {% block style %}
 <style>
     .hover-table {
-        width: 80%;
+        width: 40%;
     }
 
     .hover-table tr {
@@ -22,8 +22,8 @@
         border-bottom: 1px solid black;
     }
 
-    .rank-column {
-        width: 7%;
+    .players-column {
+        width: 5%;
         height: 100%;
         border-radius: 0%;
         text-align: center;
@@ -34,20 +34,6 @@
         height: 100%;
         border-radius: 0%;
         text-align: left;
-    }
-    
-    .rating-column {
-        width: 10%;
-        height: 100%;
-        border-radius: 0%;
-        text-align: center;
-    }
-
-    .record-column {
-        width: 10%;
-        height: 100%;
-        border-radius: 0%;
-        text-align: center;
     }
 
     a.button {
@@ -98,7 +84,7 @@
         {% for i in range(groups|length) %}
             <tr class="hover-table data-row" role="row">
                 <td class="name-column" role="cell">
-                    <a class="button" href="/group/{{groups[i].getGroupName()}}/" method="get">{{groups[i].getGroupName()}}</a>
+                    <a class="button" href="/player/{{groups[i].getGroupName()}}/" method="get">{{groups[i].getGroupName()}}</a>
                 </td>
                 <td class="players-column" role="cell">
                     <a class="button" href="/group/{{groups[i].getGroupName()}}/" method="get">{{groups[i].getNumPlayers()}}</a>

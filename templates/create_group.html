@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Create Group{% endblock %}
+{% block content %}
+<h1>Create Group</h1>
+<form action="/create_group/" method="post">
+    <div class="form-group" style="width: 300px">
+      <label for="groupName">Group Name</label>
+      <input type="text" class="form-control" name="group_name" placeholder="Name of group">
+    </div>
+    <input name="form" type="submit" value="Submit">
+</form>
+{% endblock %}

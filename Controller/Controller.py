@@ -1,6 +1,7 @@
 from Model.Game import Game
 from Model.Team import Team
 from Model.Player import Player
+from Model.Group import Group
 import random
 import trueskill
 
@@ -8,8 +9,20 @@ import trueskill
 class Controller(object):
 
     def __init__(self):
-        self.players = self.initPlayers()
-        self.games = []
+        self.groups = {}
+        
+
+    def createGroup(self, name : str):
+        self.groups[name] = Group(name)
+
+
+    def getGroup(self, name : str):
+        return self.groups[name]
+    
+
+    def getGroups(self):
+        return self.groups
+
 
     def initPlayers(self):
         playerNames = ["Justin Shaytar", "Donald Fung", "Nolan Marolf", "Josh Hutko", "Isaac Staats", "Alex Newton", "David Rowlands", "Spencer Argenna"]
