@@ -11,29 +11,33 @@
     <button>Delete Player</button>
 </form>
 <h1>Game History</h1>
-<table>
-    <tr>
-        <td class="border border-dark">Team One</td>
-        <td class="border border-dark">Score</td>
-        <td class="border border-dark">Team Two</td>
-    </tr>
-    {% for game in games %}
-    {% if game.getPlayed() == True %}
-    {% if player.getName() in game.getTeamOne() %}
-    <tr>
-        <td class="border border-dark">{{game.getTeamOne()[0]}}, {{game.getTeamOne()[1]}}</td>
-        <td class="border border-dark">{{game.getTeamOneScore()}} - {{game.getTeamTwoScore()}}</td>
-        <td class="border border-dark">{{game.getTeamTwo()[0]}}, {{game.getTeamTwo()[1]}}</td>
-    </tr>
-    {% elif player.getName() in game.getTeamTwo() %}
-    <tr>
-        <td class="border border-dark">{{game.getTeamTwo()[0]}}, {{game.getTeamTwo()[1]}}</td>
-        <td class="border border-dark">{{game.getTeamTwoScore()}} - {{game.getTeamOneScore()}}</td>
-        <td class="border border-dark">{{game.getTeamOne()[0]}}, {{game.getTeamOne()[1]}}</td>
-    </tr>
-    {% endif %}
-    {% endif %}
-    {% endfor %}
+<table role="table" cellspacing="0" cellpadding="0" class="table table-hover">
+    <thead>
+        <tr role="row">
+            <th role="columnheader">Team One</th>
+            <th role="columnheader">Score</th>
+            <th role="columnheader">Team Two</th>
+        </tr>
+    </thead>
+    <tbody role="rowgroup">
+        {% for game in games %}
+        {% if game.getPlayed() == True %}
+        {% if player.getName() in game.getTeamOne() %}
+        <tr role="row">
+            <td role="cell">{{game.getTeamOne()[0]}}, {{game.getTeamOne()[1]}}</td>
+            <td role="cell">{{game.getTeamOneScore()}} - {{game.getTeamTwoScore()}}</td>
+            <td role="cell">{{game.getTeamTwo()[0]}}, {{game.getTeamTwo()[1]}}</td>
+        </tr>
+        {% elif player.getName() in game.getTeamTwo() %}
+        <tr role="row">
+            <td role="cell">{{game.getTeamTwo()[0]}}, {{game.getTeamTwo()[1]}}</td>
+            <td role="cell">{{game.getTeamTwoScore()}} - {{game.getTeamOneScore()}}</td>
+            <td role="cell">{{game.getTeamOne()[0]}}, {{game.getTeamOne()[1]}}</td>
+        </tr>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </tbody>
 </table>
 
 {% endblock %}

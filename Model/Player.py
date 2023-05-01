@@ -57,3 +57,6 @@ class Player(object):
     
     def setSigma(self, sigma : float):
         self.rating.sigma = sigma
+
+    def getRecord(self):
+        return f"{self.wins} - {self.losses}"

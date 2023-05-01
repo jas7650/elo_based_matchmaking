@@ -1,30 +1,59 @@
 {% extends "base.html" %}
 {% block title %}Home Page{% endblock %}
 {% block content %}
-<h1>Rankings</h1>
-<ol>
-    {% for player in players %}
-    <li>
-        <form action="/player/{{player.getName()}}/", method="get">
-            <button>{{player.getName()}}: {{player.getMuRounded()}}</button>
-        </form>
-    </li>
-    {% endfor %}
-</ol>
+<div class="container">
+    <h1>Rankings</h1>
 
-<h1>Game History</h1>
-<table>
-    <tr>
-        <td class="border border-dark">Team One</td>
-        <td class="border border-dark">Score</td>
-        <td class="border border-dark">Team Two</td>
-    </tr>
-    {% for game in games %}
-    <tr>
-        <td class="border border-dark">{{game.getTeamOne()[0]}}, {{game.getTeamOne()[1]}}</td>
-        <td class="border border-dark">{{game.getTeamOneScore()}} - {{game.getTeamTwoScore()}}</td>
-        <td class="border border-dark">{{game.getTeamTwo()[0]}}, {{game.getTeamTwo()[1]}}</td>
-    </tr>
-    {% endfor %}
-</table>
+    
+    <table role="table" cellspacing="0" cellpadding="0" class="table table-hover">
+        <thead>
+            <tr role="row">
+                <th role="columnheader">Rank</th>
+                <th role="columnheader">Name</th>
+                <th role="columnheader">Mu</th>
+                <th role="columnheader">Record</th>
+            </tr>
+        </thead>
+        <tbody role="rowgroup">
+        {% for i in range(players|length) %}
+            <tr role="row">
+                <td role="cell">
+                    <a href="/player/{{players[i].getName()}}/" method="get">{{i+1}}</a>
+                </td>
+                <td role="cell">
+                    <a href="/player/{{players[i].getName()}}/" method="get">{{players[i].getName()}}</a>
+                </td>
+                <td role="cell">
+                    <a href="/player/{{players[i].getName()}}/" method="get">{{players[i].getMuRounded()}}</a>
+                </td>
+                <td role="cell">
+                    <a href="/player/{{players[i].getName()}}/" method="get">{{players[i].getRecord()}}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h1>Game History</h1>
+    <table role="table" cellspacing="0" cellpadding="0" class="table table-hover">
+        <thead>
+            <tr role="row">
+                <th role="columnheader">Team One</th>
+                <th role="columnheader">Score</th>
+                <th role="columnheader">Team Two</th>
+            </tr>
+        </thead>
+        <tbody role="rowgroup">
+        {% for game in games %}
+        {% if game.getPlayed() == True %}
+            <tr role="row">
+                <td role="cell">{{game.getTeamOne()[0]}}, {{game.getTeamOne()[1]}}</td>
+                <td role="cell">{{game.getTeamOneScore()}} - {{game.getTeamTwoScore()}}</td>
+                <td role="cell">{{game.getTeamTwo()[0]}}, {{game.getTeamTwo()[1]}}</td>
+            </tr>
+        {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
