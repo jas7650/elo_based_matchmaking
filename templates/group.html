@@ -85,6 +85,9 @@
 {% endblock %}
 {% block content %}
 <div class="container">
+    <a href="/group/{{group.getGroupName()}}/add_player/" method="get">Add Player</a>
+    <br>
+    <a href="/group/{{group.getGroupName()}}/games/" method="get">Create Games</a>
     <h1>Rankings</h1>
     <table class="hover-table" role="table" cellspacing="0" cellpadding="0">
         <thead>
@@ -114,6 +117,26 @@
         {% endfor %}
         </tbody>
     </table>
-    <a href="/group/{{group.getGroupName()}}/add_player/" method="get">Add Player</a>
+    <h1>Game History</h1>
+    <table role="table" cellspacing="0" cellpadding="0" class="table table-hover">
+        <thead>
+            <tr role="row">
+                <th role="columnheader">Team One</th>
+                <th role="columnheader">Score</th>
+                <th role="columnheader">Team Two</th>
+            </tr>
+        </thead>
+        <tbody role="rowgroup">
+            {% for game in games %}
+            {% if game.getPlayed() == True %}
+            <tr role="row">
+                <td role="cell">{{game.getTeamOne()[0]}}, {{game.getTeamOne()[1]}}</td>
+                <td role="cell">{{game.getTeamOneScore()}} - {{game.getTeamTwoScore()}}</td>
+                <td role="cell">{{game.getTeamTwo()[0]}}, {{game.getTeamTwo()[1]}}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}

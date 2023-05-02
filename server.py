@@ -23,7 +23,7 @@ def add_players_page(name):
         skill_level = getSkillLevel(request.form['skill_level'])
         player = Player(request.form['player_name'], skill_level, skill_level/5)
         group.addPlayer(player)
-    return render_template('add_player.html', players=list(group.getPlayers().values()), group=group)
+    return render_template('add_player.html', players=group.getPlayers(), group=group)
 
 
 @app.route('/group/<string:group_name>/player/<string:player_name>/', methods=['GET', 'POST'])
@@ -31,10 +31,10 @@ def player_page(group_name, player_name):
     group = controller.getGroup(group_name)
     if request.method == 'GET':
         player = group.getPlayer(player_name)
-        return render_template('player.html', player=player, games=group.getGames())
+        return render_template('player.html', player=player, games=group.getGames(), group=group)
     elif request.method == 'POST':
         group.removePlayer(player_name)
-        return redirect(url_for('home_page'))
+        return redirect(url_for('groups_page', name=group_name))
 
 
 @app.route('/group/<string:name>/games/', methods = ['GET', 'POST'])
@@ -42,7 +42,7 @@ def games_page(name):
     group = controller.getGroup(name)
     if request.method == 'GET':
         group.createGames()
-        return render_template('games.html', games=group.getGames())
+        return render_template('games.html', games=group.getGames(), name=name)
     elif request.method == 'POST':
         for i in range(len(group.getGames())):
             game = group.getGames()[i]
@@ -53,7 +53,7 @@ def games_page(name):
                     game.setScore([t1_score, t2_score])
                     game.setPlayed()
                     group.updateRatings(game)
-        return redirect(url_for('home_page'))
+        return redirect(url_for('groups_page', name=name))
     
 
 @app.route('/create_group/', methods=['GET', 'POST'])
@@ -63,13 +63,13 @@ def create_group_page():
     elif request.method == 'POST':
         group_name = request.form['group_name']
         controller.createGroup(group_name)
-        return redirect(url_for('home_page'))
+        return redirect(url_for('groups_page', name=group_name))
 
 
 @app.route('/group/<string:name>/', methods=['GET', 'POST'])
 def groups_page(name):
     group = controller.getGroup(name)
-    return render_template('group.html', group=controller.getGroup(name), players=list(group.getPlayers().values()))
+    return render_template('group.html', group=controller.getGroup(name), players=group.getPlayers(), games=group.getGames())
 
 
 def getSkillLevel(option : str):

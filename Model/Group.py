@@ -27,7 +27,7 @@ class Group(object):
 
 
     def getPlayers(self):
-        return self.players
+        return self.sortPlayersBySkill(self.players)
     
 
     def getNumPlayers(self):
@@ -67,7 +67,6 @@ class Group(object):
         p2.addResult(game)
         p3.addResult(game)
         p4.addResult(game)
-        self.players = self.sortPlayersBySkill(self.players)
 
 
     def createGames(self):
@@ -110,8 +109,8 @@ class Group(object):
         return (team.getPlayerOne().getMu() + team.getPlayerTwo().getMu())
 
 
-    def sortPlayersBySkill(self, players : list):
-        return sorted(players, key=lambda item: item.getMu(), reverse=True)
+    def sortPlayersBySkill(self, players : dict):
+        return sorted(players.values(), key=lambda item: item.getMu(), reverse=True)
 
 
     def sortTeamsBySkill(self, teams : list):
