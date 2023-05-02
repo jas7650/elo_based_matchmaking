@@ -12,7 +12,6 @@ controller = Controller()
 @app.route('/', methods = ['GET'])
 def home_page():
     if request.method == 'GET':
-        print(list(controller.getGroups().values()))
         return render_template('home.html', groups=list(controller.getGroups().values()))  
 
 

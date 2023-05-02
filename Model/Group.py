@@ -11,6 +11,7 @@ class Group(object):
         self.players = {}
         self.games = []
         self.name = name
+        self.previous_teams = [[], []]
 
 
     def setGroupName(self, name : str):
@@ -49,6 +50,20 @@ class Group(object):
 
     def getNumGames(self):
         return len(self.games)
+    
+
+    def shiftInTeamsList(self, teams : list):
+        self.previous_teams[1] = self.previous_teams[0]
+        self.previous_teams[0] = teams
+
+
+    def getTeamExisted(self, team : Team):
+        for list in self.previous_teams:
+            for t in list:
+                names = team.getPlayerNames()
+                if names[0] in t.getPlayerNames() and names[1] in t.getPlayerNames():
+                    return True
+        return False
 
 
     def updateRatings(self, game : Game):
@@ -76,6 +91,7 @@ class Group(object):
     def createGames(self):
         players = self.sortPlayersBySkill(self.players)
         teams = self.createTeams(players)
+        self.shiftInTeamsList(teams)
 
         teams = self.sortTeamsBySkill(teams)
         for i in range(0, len(teams)-1, 2):
@@ -89,7 +105,11 @@ class Group(object):
         players_copy = players.copy()
         teams = []
         for i in range(int(len(players)/2)):
+            attempts = 0
             team = self.getRandomTeam(players_copy)
+            while self.getTeamExisted(team) == True and attempts < 10:
+                team = self.getRandomTeam(players_copy)
+                attempts += 1
             players_copy.remove(team.getPlayerOne())
             players_copy.remove(team.getPlayerTwo())
             teams.append(team)

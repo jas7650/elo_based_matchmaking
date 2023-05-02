@@ -11,15 +11,12 @@
         height: 40px;
         margin: 0%;
         padding: 0%;
+        border-top: 1px solid lightgray;
+        border-bottom: 1px solid lightgray;
     }
 
     .hover-table tr.data-row:hover {
         background-color: lightgray;
-    }
-
-    .hover-table td {
-        border-top: 1px solid black;
-        border-bottom: 1px solid black;
     }
 
     .rank-column {
@@ -60,18 +57,18 @@
         line-height: 40px;
     }
 
-    .team-one-column {
-        width: 40%;
-        height: 100%;
-        border-radius: 0%;
-        text-align: right;
-    }
-
-    .team-two-column {
-        width: 40%;
+    .left-column {
+        width: 20%;
         height: 100%;
         border-radius: 0%;
         text-align: left;
+    }
+
+    .right-column {
+        width: 20%;
+        height: 100%;
+        border-radius: 0%;
+        text-align: right;
     }
 
     .score-column {
@@ -118,21 +115,25 @@
         </tbody>
     </table>
     <h1>Game History</h1>
-    <table role="table" cellspacing="0" cellpadding="0" class="table table-hover">
+    <table class="hover-table" role="table" cellspacing="0" cellpadding="0" style="width: 60%">
         <thead>
             <tr role="row">
-                <th role="columnheader">Team One</th>
-                <th role="columnheader">Score</th>
-                <th role="columnheader">Team Two</th>
+                <th class="left-column" role="columnheader">Player One</th>
+                <th class="left-column" role="columnheader">Player Two</th>
+                <th class="score-column" role="columnheader">Score</th>
+                <th class="right-column" role="columnheader">Player Three</th>
+                <th class="right-column" role="columnheader">Player Four</th>
             </tr>
         </thead>
         <tbody role="rowgroup">
             {% for game in games %}
             {% if game.getPlayed() == True %}
-            <tr role="row">
-                <td role="cell">{{game.getTeamOne()[0]}}, {{game.getTeamOne()[1]}}</td>
-                <td role="cell">{{game.getTeamOneScore()}} - {{game.getTeamTwoScore()}}</td>
-                <td role="cell">{{game.getTeamTwo()[0]}}, {{game.getTeamTwo()[1]}}</td>
+            <tr class="hover-table data-row" role="row">
+                <td class="left-column" role="cell">{{game.getTeamOne()[0]}}</td>
+                <td class="left-column" role="cell">{{game.getTeamOne()[1]}}</td>
+                <td class="score-column" role="cell">{{game.getTeamOneScore()}} - {{game.getTeamTwoScore()}}</td>
+                <td class="right-column" role="cell">{{game.getTeamTwo()[0]}}</td>
+                <td class="right-column" role="cell">{{game.getTeamTwo()[1]}}</td>
             </tr>
             {% endif %}
             {% endfor %}
