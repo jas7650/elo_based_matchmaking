@@ -10,3 +10,8 @@
     <input name="form" type="submit" value="Submit">
 </form>
 {% endblock %}
+{% block dropdown %}
+    {% for i in range(groups|length) %}
+        <a class="dropdown-item" href="/group/{{groups[i].getGroupName()}}">{{groups[i].getGroupName()}}</a>
+    {% endfor %}
+{% endblock %}

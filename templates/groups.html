@@ -95,3 +95,8 @@
     </table>
 </div>
 {% endblock %}
+{% block dropdown %}
+    {% for i in range(groups|length) %}
+        <a class="dropdown-item" href="/group/{{groups[i].getGroupName()}}">{{groups[i].getGroupName()}}</a>
+    {% endfor %}
+{% endblock %}

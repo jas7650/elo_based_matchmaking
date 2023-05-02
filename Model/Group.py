@@ -45,6 +45,10 @@ class Group(object):
 
     def getGames(self):
         return self.games
+    
+
+    def getNumGames(self):
+        return len(self.games)
 
 
     def updateRatings(self, game : Game):

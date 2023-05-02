@@ -3,7 +3,7 @@
 {% block style %}
 <style>
     .hover-table {
-        width: 80%;
+        width: 60%;
     }
 
     .hover-table tr {
@@ -22,34 +22,6 @@
         border-bottom: 1px solid black;
     }
 
-    .rank-column {
-        width: 7%;
-        height: 100%;
-        border-radius: 0%;
-        text-align: center;
-    }
-
-    .name-column {
-        width: 70%;
-        height: 100%;
-        border-radius: 0%;
-        text-align: left;
-    }
-    
-    .rating-column {
-        width: 10%;
-        height: 100%;
-        border-radius: 0%;
-        text-align: center;
-    }
-
-    .record-column {
-        width: 10%;
-        height: 100%;
-        border-radius: 0%;
-        text-align: center;
-    }
-
     a.button {
         appearance: button;
         text-decoration: none;
@@ -60,22 +32,22 @@
         line-height: 40px;
     }
 
-    .team-one-column {
-        width: 40%;
-        height: 100%;
-        border-radius: 0%;
-        text-align: right;
-    }
-
-    .team-two-column {
-        width: 40%;
+    .name-column {
+        width: 60%;
         height: 100%;
         border-radius: 0%;
         text-align: left;
     }
 
-    .score-column {
-        width: 10%;
+    .players-column {
+        width: 20%;
+        height: 100%;
+        border-radius: 0%;
+        text-align: center;
+    }
+
+    .games-column {
+        width: 20%;
         height: 100%;
         border-radius: 0%;
         text-align: center;
@@ -92,6 +64,7 @@
             <tr role="row">
                 <th class="name-column" role="columnheader">Group</th>
                 <th class="players-column" role="columnheader">Players</th>
+                <th class="games-column" role="columnheader">Games Played</th>
             </tr>
         </thead>
         <tbody role="rowgroup">
@@ -103,9 +76,17 @@
                 <td class="players-column" role="cell">
                     <a class="button" href="/group/{{groups[i].getGroupName()}}/" method="get">{{groups[i].getNumPlayers()}}</a>
                 </td>
+                <td class="games-column" role="cell">
+                    <a class="button" href="/group/{{groups[i].getGroupName()}}/" method="get">{{groups[i].getNumGames()}}</a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 </div>
+{% endblock %}
+{% block dropdown %}
+    {% for i in range(groups|length) %}
+        <a class="dropdown-item" href="/group/{{groups[i].getGroupName()}}">{{groups[i].getGroupName()}}</a>
+    {% endfor %}
 {% endblock %}
