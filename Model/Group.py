@@ -12,6 +12,8 @@ class Group(object):
         self.games = []
         self.name = name
         self.previous_teams = [[], []]
+        self.previous_sit = []
+        self.current_sit = []
 
 
     def setGroupName(self, name : str):
@@ -49,7 +51,11 @@ class Group(object):
     
 
     def getNumGames(self):
-        return len(self.games)
+        numGames = 0
+        for game in self.games:
+            if game.getPlayed() == True:
+                numGames += 1
+        return numGames
     
 
     def shiftInTeamsList(self, teams : list):
@@ -86,6 +92,25 @@ class Group(object):
         p2.addResult(game)
         p3.addResult(game)
         p4.addResult(game)
+
+# Priorities:
+# 1) Creating competitive games with variety
+# 2) Ensuring that no one spends too much time sitting during a session
+
+# Process:
+# 1) Sort players by skill level
+# 2) Iterate from the top to the bottom, creating teams by selecting the highest ranked
+#    player remaining, then selecting a random player within a small range of the player. 
+# 3) Create a team for players that just sat first, to ensure that they don't sit 
+#    multiple times in a row. Can do so, by choosing a player that is within a range 
+#    better or worse than the player of interest. 
+# 4) After teams have been assigned for each player that just sat, attempt to generate teams
+#    for the rest of the players. 
+# 5) For each team, check if team existed in the last 2 rounds of games. Try a new team if 
+#    the team did exist recently.
+# 6) Try each combination of teams given the players that have not been assigned a team yet. 
+#    If no combination passes, back up to the previous team and try to create a new combination
+#    that works.
 
 
     def createGames(self):
