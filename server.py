@@ -153,7 +153,6 @@ if __name__ == '__main__':
         players = get_players(group_name)
         for player in players:
             player_name = f"{player['player_first_name']} {player['player_last_name']}"
-            print(type(player['mu']))
-            # controller.getGroup(group_name).addPlayer(Player(player_name, float(player['mu']), 1.0))
+            controller.getGroup(group_name).addPlayer(Player(player_name, float(player['mu']), 1.0))
 
-    # app.run(debug=True)
+    app.run(debug=True)
