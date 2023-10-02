@@ -33,7 +33,7 @@
 <h1>Existing Players</h1>
 <ul>
     {% for player in players %}
-        <li>{{player.getName()}}</li>
+        <li>{{player.getName()}} ({{player.getMuRounded()}})</li>
     {% endfor %}
 </ul><br>
 {% endblock %}
