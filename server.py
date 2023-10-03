@@ -102,11 +102,7 @@ def insert_values(player_names, group_name):
 
 
 def get_players(group_name):
-    dbname = get_database()
- 
-    # Retrieve a collection named "user_1_items" from database
-    collection_name = dbname[group_name]
-    return collection_name.find()
+    return get_database()[group_name].find()
 
 
 def getSkillLevel(option : str):
@@ -145,6 +141,7 @@ if __name__ == '__main__':
     player_names = []
     items = get_players("RIT Roundnet")
     for item in items:
+        print(item)
         player_names.append(f"{item['player_first_name']} {item['player_last_name']}")
     insert_values(player_names, "RIT Roundnet")
 
