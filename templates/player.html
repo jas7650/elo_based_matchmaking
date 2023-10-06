@@ -7,10 +7,12 @@
     <li>Record: {{player.getWins()}} - {{player.getLosses()}}</li>
 </ul>
 
-<form action="/player/{{player.getName()}}/" method="post">
+<form action="/group/{{group.getGroupName()}}/player/{{player.getName()}}/" method="post">
     <button>Delete Player</button>
 </form>
-<a href="/group/{{group.getGroupName()}}/" method="get">Return to Group</a>
+<form action="/group/{{group.getGroupName()}}/" method="get">
+    <button>Return to Group</button>
+</form>
 <h1>Game History</h1>
 <table role="table" cellspacing="0" cellpadding="0" class="table table-hover">
     <thead>
