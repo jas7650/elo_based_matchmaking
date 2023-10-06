@@ -24,6 +24,15 @@ class Group(object):
         return self.name
 
 
+    def addGame(self, game : Game):
+        self.games.append(game)
+        players = []
+        players.extend(game.getTeamOne())
+        players.extend(game.getTeamTwo())
+        for player in players:
+            self.getPlayer(player).addResult(game)
+
+
     def addPlayer(self, player : Player):
         if player.getName() not in self.players.keys():
             self.players[player.getName()] = player
@@ -35,20 +44,19 @@ class Group(object):
 
     def getNumPlayers(self):
         return len(self.players.items())
-    
+
 
     def getPlayer(self, name : str):
         return self.players[name]
 
 
     def removePlayer(self, name : str):
-        player = self.getPlayerByName(name)
-        self.players.remove(player)
+        del self.players[name]
 
 
     def getGames(self):
         return self.games
-    
+
 
     def getNumGames(self):
         numGames = 0
@@ -56,7 +64,7 @@ class Group(object):
             if game.getPlayed() == True:
                 numGames += 1
         return numGames
-    
+
 
     def shiftInTeamsList(self, teams : list):
         self.previous_teams[1] = self.previous_teams[0]
@@ -152,7 +160,7 @@ class Group(object):
             p2 = players[random.randint(1, len(players)-1)]
             team = Team(p1, p2)
             return team
-        
+
 
     def getAverageSkill(self, team : Team):
         return (team.getPlayerOne().getMu() + team.getPlayerTwo().getMu())
