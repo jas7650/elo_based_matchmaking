@@ -7,21 +7,21 @@ import trueskill
 
 class Group(object):
 
-    def __init__(self, name : str):
+    def __init__(self, group_name : str):
         self.players = {}
         self.games = []
-        self.name = name
+        self.group_name = group_name
         self.previous_teams = [[], []]
         self.previous_sit = []
         self.current_sit = []
 
 
-    def setGroupName(self, name : str):
-        self.name = name
+    def setGroupName(self, group_name : str):
+        self.group_name = group_name
 
 
     def getGroupName(self):
-        return self.name
+        return self.group_name
 
 
     def addGame(self, game : Game):

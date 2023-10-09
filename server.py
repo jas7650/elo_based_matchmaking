@@ -23,6 +23,7 @@ def add_players_page(name):
         skill_level = getSkillLevel(request.form['skill_level'])
         player = Player(request.form['player_name'], skill_level, skill_level/5)
         group.addPlayer(player)
+        create_player(player, group.getGroupName())
     return render_template('add_player.html', players=group.getPlayers(), group=group, groups=list(controller.getGroups().values()))
 
 
@@ -33,9 +34,6 @@ def player_page(group_name, player_name):
         player = group.getPlayer(player_name)
         return render_template('player.html', player=player, games=group.getGames(), group=group, groups=list(controller.getGroups().values()))
     elif request.method == 'POST':
-        print("Players")
-        for player in group.getPlayers():
-            print(player.getName())
         delete_player(group.getPlayer(player_name), group_name)
         group.removePlayer(player_name)
         return redirect(url_for('groups_page', name=group_name))
@@ -72,8 +70,12 @@ def create_group_page():
 
 @app.route('/group/<string:name>/', methods=['GET', 'POST'])
 def groups_page(name):
-    group = controller.getGroup(name)
-    return render_template('group.html', group=controller.getGroup(name), players=group.getPlayers(), games=group.getGames(), groups=list(controller.getGroups().values()))
+    if request.method == 'POST':
+        group = controller.getGroup(name)
+        return render_template('group.html', group=controller.getGroup(name), players=group.getPlayers(), games=group.getGames(), groups=list(controller.getGroups().values()))
+    elif request.method == 'GET':
+        group = controller.getGroup(name)
+        return render_template('group.html', group=controller.getGroup(name), players=group.getPlayers(), games=group.getGames(), groups=list(controller.getGroups().values()))
 
 
 def get_database():
@@ -109,6 +111,12 @@ def delete_player(player : Player, group_name):
     dbname = get_database()
     collection_name = dbname[group_name]
     collection_name.delete_one({"player_first_name" : f"{player.getName().split()[0]}", "player_last_name" : f"{player.getName().split()[1]}", "mu" : f"{player.getMuRounded()}"})
+
+
+def create_player(player : Player, group_name : str):
+    db_name = get_database()
+    collection = db_name[group_name]
+    collection.insert_one({"player_first_name" : f"{player.getName().split()[0]}", "player_last_name" : f"{player.getName().split()[1]}", "mu" : f"{player.getMuRounded()}"})
 
 
 def get_players(group_name):
