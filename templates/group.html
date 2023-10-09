@@ -82,9 +82,13 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-    <a href="/group/{{group.getGroupName()}}/add_player/" method="get">Add Player</a>
+    <form action="/group/{{group.getGroupName()}}/add_player/" method="get">
+        <button>Add Player</button>
+    </form>
+    <form action="/group/{{group.getGroupName()}}/games/" method="get">
+        <button>Create Games</button>
+    </form>
     <br>
-    <a href="/group/{{group.getGroupName()}}/games/" method="get">Create Games</a>
     <h1>Rankings</h1>
     <table class="hover-table" role="table" cellspacing="0" cellpadding="0">
         <thead>
