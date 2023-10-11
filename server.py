@@ -70,12 +70,8 @@ def create_group_page():
 
 @app.route('/group/<string:name>/', methods=['GET', 'POST'])
 def groups_page(name):
-    if request.method == 'POST':
-        group = controller.getGroup(name)
-        return render_template('group.html', group=controller.getGroup(name), players=group.getPlayers(), games=group.getGames(), groups=list(controller.getGroups().values()))
-    elif request.method == 'GET':
-        group = controller.getGroup(name)
-        return render_template('group.html', group=controller.getGroup(name), players=group.getPlayers(), games=group.getGames(), groups=list(controller.getGroups().values()))
+    group = controller.getGroup(name)
+    return render_template('group.html', group=controller.getGroup(name), players=group.getPlayers(), games=group.getGames(), groups=list(controller.getGroups().values()))
 
 
 def get_database():

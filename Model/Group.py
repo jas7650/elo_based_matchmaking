@@ -30,7 +30,8 @@ class Group(object):
         players.extend(game.getTeamOne())
         players.extend(game.getTeamTwo())
         for player in players:
-            self.getPlayer(player).addResult(game)
+            if self.getPlayer(player) != None:
+                self.getPlayer(player).addResult(game)
 
 
     def addPlayer(self, player : Player):
@@ -47,7 +48,9 @@ class Group(object):
 
 
     def getPlayer(self, name : str):
-        return self.players[name]
+        if name in self.players.keys():
+            return self.players[name]
+        return None
 
 
     def removePlayer(self, name : str):
