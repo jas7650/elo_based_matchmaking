@@ -65,6 +65,7 @@ def create_group_page():
     elif request.method == 'POST':
         group_name = request.form['group_name']
         controller.createGroup(group_name)
+        create_group(group_name)
         return redirect(url_for('groups_page', name=group_name))
 
 
@@ -86,8 +87,8 @@ def get_database():
 
 
 def insert_values(player_names, group_name):
-    dbname = get_database()
-    collection_name = dbname[group_name]
+    db = get_database()
+    collection_name = db[group_name]
     first_names = ['Justin', 'Alex', 'Sam', 'Isaac']
     last_names = ['Shaytar', 'Newton', 'McCune', 'Staats']
     mus = ['6.0', '5.25', '5.0', '4.75']
@@ -103,9 +104,18 @@ def insert_values(player_names, group_name):
             collection_name.insert_one(player)
 
 
+def create_group(group_name : str):
+    db = get_database()
+    if group_name not in db.list_collection_names():
+        group = db[group_name]
+        group_games = db[f"{group_name} Games"]
+        groups = db['groups']
+        groups.insert_one({"group_name" : group_name})
+
+
 def delete_player(player : Player, group_name):
-    dbname = get_database()
-    collection_name = dbname[group_name]
+    db = get_database()
+    collection_name = db[group_name]
     collection_name.delete_one({"player_first_name" : f"{player.getName().split()[0]}", "player_last_name" : f"{player.getName().split()[1]}", "mu" : f"{player.getMuRounded()}"})
 
 
