@@ -26,6 +26,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { LogoLink } from "./LogoLink";
 
 interface MenuItem {
   title: string;
@@ -97,13 +98,7 @@ const Navbar2 = ({
       <div className="container">
         {/* Desktop Menu */}
         <nav className="hidden justify-between lg:flex">
-          {/* Logo */}
-          <a href={logo.url} className="flex items-center gap-2">
-            <img src={logo.src} className="max-h-8" alt={logo.alt} />
-            <span className="text-lg font-semibold tracking-tighter">
-              {logo.title}
-            </span>
-          </a>
+          <LogoLink />
           <div className="flex items-center gap-6">
             <div className="flex items-center">
               <NavigationMenuWithoutViewport>
