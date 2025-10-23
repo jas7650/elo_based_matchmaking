@@ -11,14 +11,9 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { useLoginForm } from "../hooks/useLoginForm.ts";
+import { LogoLink } from "@/components/LogoLink.tsx";
 
-interface Login6Props {
-  logo: {
-    url: string;
-    src: string;
-    alt: string;
-    title?: string;
-  };
+interface LoginFormProps {
   buttonText?: string;
   googleText?: string;
   signupText?: string;
@@ -26,17 +21,11 @@ interface Login6Props {
 }
 
 const LoginForm = ({
-  logo = {
-    url: "https://www.shadcnblocks.com",
-    src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblocks-logo-word.svg",
-    alt: "logo",
-    title: "shadcnblocks.com",
-  },
   buttonText = "Login",
   googleText = "Login with Google",
-  signupText = "Need an account?",
+  signupText = "Don't have an account?",
   signupUrl = "/register",
-}: Login6Props) => {
+}: LoginFormProps) => {
   const { form, onSubmit } = useLoginForm();
 
   return (
@@ -45,15 +34,7 @@ const LoginForm = ({
         <section className="bg-background h-screen">
           <div className="flex h-full items-center justify-center">
             <div className="flex flex-col items-center gap-6 lg:justify-start">
-              {/* Logo */}
-              <a href={logo.url}>
-                <img
-                  src={logo.src}
-                  alt={logo.alt}
-                  title={logo.title}
-                  className="h-10 dark:invert"
-                />
-              </a>
+              <LogoLink />
               <div className="min-w-sm flex w-full max-w-sm flex-col items-center gap-y-4 rounded-lg border px-6 py-12">
                 <Button className="w-full">
                   <img
@@ -64,12 +45,10 @@ const LoginForm = ({
                   {googleText}
                 </Button>
 
-                <div className="relative flex w-full items-center justify-center py-2">
+                <div className="relative flex w-full items-center justify-center py-4">
                   <div className="border-border absolute h-[1px] w-full border-t"></div>
-                  <span className="bg-background text-muted-foreground relative px-2 text-xs">
-                    OR
-                  </span>
                 </div>
+
                 <FieldGroup>
                   <FieldSet>
                     <Field data-invalid={!!form.formState.errors.email}>
